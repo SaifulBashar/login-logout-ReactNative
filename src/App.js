@@ -7,25 +7,23 @@ import {
 } from 'react-native';
 
 import {
-    Button,
-    Header,
-    CardSec,
-    Card
+    Header, Spinner, Button,CardSec
 } from './component/common';
 
-import { Input } from './component/Input';
 import firebase from 'firebase';
+import { LoginForm } from './component/LoginForm';
+
 
 export class App extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props);
         this.state = {
-            email: '',
-            password: ''
+            loggedIn: null
         }
     }
 
     componentWillMount() {
+
         firebase.initializeApp(
             {
                 apiKey: "AIzaSyCmTrQMr3mq1E_ybVD7wnFBlepmNu_yIYA",
@@ -36,54 +34,46 @@ export class App extends Component {
                 messagingSenderId: "637751726041"
             }
         );
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({ loggedIn: true });
+            } else {
+                this.setState({ loggedIn: false });
+            }
+        });
+
     }
 
+    renderPage() {
+        switch (this.state.loggedIn) {
+            case true:
+                return (
+                    <CardSec>
+                    <Button onPress={() => firebase.auth().signOut()}>
+                        Log Out
+                    </Button>
+                    </CardSec>
+                    
+                );
+            case false:
+                return <LoginForm />;
+            default:
+                return <Spinner size="large" />;
+        }
+
+    }
 
 
     render() {
 
         return (
-            <Card>
-                <CardSec>
 
-                    <Header headerText={"Auth"} />
+            <View>
+                <Header headerText="Authentication" />
+                {this.renderPage()}
+            </View>
 
-                </CardSec>
-
-                <CardSec>
-
-                    <Input
-                        placeholder={'user@***.com'}
-                        value={this.state.email}
-                        autoCorrect={false}
-                        label={'Email:'}
-                        secureTextEntry={false}
-                        onChangeText={(text) => this.setState({ email: text })}
-                    />
-
-                </CardSec>
-
-                <CardSec>
-
-                    <Input
-                        placeholder={'*********'}
-                        value={this.state.password}
-                        autoCorrect={false}
-                        label={'Password:'}
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({ password: text })}
-                    />
-
-                </CardSec>
-
-                <CardSec>
-
-                    <Button>
-                        Log In
-                    </Button>
-
-                </CardSec>
-            </Card>
 
         );
     }

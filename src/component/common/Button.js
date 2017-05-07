@@ -8,11 +8,14 @@ import {
 
 export const Button = function (props) {
     return (
+       
         <TouchableOpacity style={styles.buttonStyle} onPress={props.onPress}>
 
             <Text style={styles.textStyle}>{props.children}</Text>
 
         </TouchableOpacity>
+
+        
     );
 }
 
@@ -20,15 +23,22 @@ export const Button = function (props) {
 
 const styles = StyleSheet.create({
     buttonStyle: {
-        borderRadius: 5,
-        padding: 5,
-        borderColor: 'rgb(90,200,250)',
         flex: 1,
-        borderWidth: 2
+    alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#007aff',
+    marginLeft: 5,
+    marginRight: 5,
     },
 
     textStyle: {
         alignSelf: 'center',
-        fontSize: 20
+    color: '#007aff',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingTop: 10,
+    paddingBottom: 10
     }
 });
