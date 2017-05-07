@@ -1,0 +1,3 @@
+rootProject.name = 'login_and_signup'
+
+include ':app'
